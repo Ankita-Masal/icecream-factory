@@ -7,7 +7,8 @@ RUN npm install
 
 COPY . .
 RUN npx prisma generate
+RUN npx prisma migrate deploy || true
 
 EXPOSE 5000
 
-CMD ["sh", "-c", "npx prisma migrate deploy && node server.js"]
+CMD ["node", "server.js"]
