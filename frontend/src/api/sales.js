@@ -1,6 +1,7 @@
 import axios from 'axios'
 
-const API = axios.create({ baseURL: '/api/sales' })
+const BASE = import.meta.env.VITE_API_URL || ''
+const API = axios.create({ baseURL: `${BASE}/api/sales` })
 
 const getAuthHeader = () => ({
   headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
