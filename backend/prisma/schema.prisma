@@ -1,0 +1,236 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ========== AUTH ==========
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  password  String
+  createdAt DateTime @default(now())
+}
+
+// ========== CATEGORIES ==========
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  createdAt DateTime  @default(now())
+  products  Product[]
+  boxes     Box[]
+}
+
+// ========== ICE CREAM INVENTORY ==========
+model Product {
+  id         Int      @id @default(autoincrement())
+  categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id])
+  size       String
+  flavor     String
+  price      Float
+  quantity   Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  saleItems  SaleItem[]
+}
+
+// ========== BOX CONFIG ==========
+model Box {
+  id             Int      @id @default(autoincrement())
+  categoryId     Int
+  category       Category @relation(fields: [categoryId], references: [id])
+  size           String
+  quantityPerBox Int
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+// ========== GODOWN ==========
+model GodownMaterial {
+  id                Int            @id @default(autoincrement())
+  name              String         @unique
+  availableQuantity Float          @default(0)
+  unit              String
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  usageHistory      UsageHistory[]
+}
+
+model UsageHistory {
+  id         Int            @id @default(autoincrement())
+  materialId Int
+  material   GodownMaterial @relation(fields: [materialId], references: [id])
+  quantity   Float
+  date       DateTime       @default(now())
+}
+
+// ========== PURCHASE MATERIAL ==========
+model PurchaseMaterial {
+  id            Int      @id @default(autoincrement())
+  name          String
+  supplier      String
+  quantity      Float
+  unit          String
+  pricePerUnit  Float
+  purchaseDate  DateTime
+  paymentStatus String   @default("Pending")
+  paymentDate   DateTime?
+  paidAmount    Float?
+  createdAt     DateTime @default(now())
+}
+
+// ========== MILK PURCHASES ==========
+model MilkPurchase {
+  id            Int      @id @default(autoincrement())
+  supplier      String
+  litres        Float
+  snf           Float
+  fat           Float
+  pricePerLitre Float
+  totalAmount   Float
+  purchaseDate  DateTime
+  paymentStatus String   @default("Pending")
+  paymentDate   DateTime?
+  paidAmount    Float?
+  createdAt     DateTime @default(now())
+}
+
+// ========== KHAWA PURCHASES ==========
+model KhawaPurchase {
+  id            Int      @id @default(autoincrement())
+  supplier      String
+  quantity      Float
+  pricePerUnit  Float
+  totalAmount   Float
+  purchaseDate  DateTime
+  paymentStatus String   @default("Pending")
+  paymentDate   DateTime?
+  paidAmount    Float?
+  createdAt     DateTime @default(now())
+}
+
+// ========== CUSTOMERS ==========
+model Customer {
+  id        Int         @id @default(autoincrement())
+  name      String
+  phone     String
+  email     String?
+  address   String
+  createdAt DateTime    @default(now())
+  sales     Sale[]
+  transport Transport[]
+}
+
+// ========== SALES ==========
+model Sale {
+  id            Int           @id @default(autoincrement())
+  billNumber    String        @unique
+  customerId    Int
+  customer      Customer      @relation(fields: [customerId], references: [id])
+  billDate      DateTime
+  totalAmount   Float
+  paymentStatus String        @default("Pending")
+  paymentDate   DateTime?
+  paidAmount    Float?
+  billType      String        @default("Rough")
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  items         SaleItem[]
+  versions      BillVersion[]
+  transport     Transport[]
+}
+
+model SaleItem {
+  id        Int     @id @default(autoincrement())
+  saleId    Int
+  sale      Sale    @relation(fields: [saleId], references: [id])
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+  price     Float
+  boxes     Float   @default(0)
+}
+
+model BillVersion {
+  id        Int      @id @default(autoincrement())
+  saleId    Int
+  sale      Sale     @relation(fields: [saleId], references: [id])
+  version   Int
+  items     Json
+  total     Float
+  billType  String
+  note      String?
+  editedAt  DateTime @default(now())
+}
+
+// ========== WORKERS ==========
+model Worker {
+  id             Int          @id @default(autoincrement())
+  name           String
+  mobile         String
+  type           String       // labour, operator, manager
+  workerType     String?      // specific type e.g. Machinery, Sales
+  salaryPerMonth Float
+  address        String?
+  createdAt      DateTime     @default(now())
+  attendance     Attendance[]
+}
+
+model Attendance {
+  id       Int      @id @default(autoincrement())
+  workerId Int
+  worker   Worker   @relation(fields: [workerId], references: [id])
+  date     DateTime
+  status   String   // present, absent
+}
+
+// ========== TRANSPORT ==========
+model Vehicle {
+  id           Int         @id @default(autoincrement())
+  vehicleNumber String     @unique
+  vehicleType  String
+  ownerName    String
+  ownerPhone   String
+  ownerEmail   String?
+  ownerAddress String
+  createdAt    DateTime    @default(now())
+  transport    Transport[]
+}
+
+model Driver {
+  id            Int         @id @default(autoincrement())
+  name          String
+  phone         String
+  email         String?
+  address       String
+  licenseNumber String?
+  licenseImage  String?
+  createdAt     DateTime    @default(now())
+  transport     Transport[]
+}
+
+model Transport {
+  id             Int      @id @default(autoincrement())
+  vehicleType    String?
+  vehicleNumber  String?
+  vehicleId      Int?
+  vehicle        Vehicle? @relation(fields: [vehicleId], references: [id])
+  driverId       Int?
+  driver         Driver?  @relation(fields: [driverId], references: [id])
+  driverName     String?
+  saleId         Int?
+  sale           Sale?    @relation(fields: [saleId], references: [id])
+  customerId     Int?
+  customer       Customer? @relation(fields: [customerId], references: [id])
+  customerName   String?
+  fromLocation   String
+  toLocation     String
+  transportDate  DateTime
+  quantity       Int       @default(0)
+  status         String    @default("Scheduled")
+  billItems      Json?
+  createdAt      DateTime  @default(now())
+}
