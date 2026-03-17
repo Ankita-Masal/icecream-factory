@@ -23,7 +23,7 @@ export default function Layout({ children }) {
   const { username, logoutUser } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
-  const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768)
 
   const handleLogout = () => {
     logoutUser()
@@ -60,9 +60,17 @@ export default function Layout({ children }) {
       </header>
 
       <div className="flex pt-14">
+        {/* Mobile overlay */}
+        {sidebarOpen && window.innerWidth < 768 && (
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
+
         {/* Sidebar */}
         {sidebarOpen && (
-          <aside className="w-64 bg-white shadow-sm fixed left-0 top-14 bottom-0 overflow-y-auto z-40">
+          <aside className="w-64 bg-white shadow-sm fixed left-0 top-14 bottom-0 overflow-y-auto z-40 md:translate-x-0">
             <nav className="p-3">
               <ul className="space-y-1">
                 {navItems.map((item) => {
@@ -71,7 +79,7 @@ export default function Layout({ children }) {
                   return (
                     <li key={item.path}>
                       <button
-                        onClick={() => navigate(item.path)}
+                        onClick={() => { navigate(item.path); if (window.innerWidth < 768) setSidebarOpen(false) }}
                         className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition ${
                           isActive
                             ? 'bg-pink-600 text-white'
@@ -90,7 +98,7 @@ export default function Layout({ children }) {
         )}
 
         {/* Main Content */}
-        <main className={`flex-1 p-6 transition-all ${sidebarOpen ? 'ml-64' : 'ml-0'}`}>
+        <main className={`flex-1 p-4 md:p-6 transition-all ${sidebarOpen ? 'md:ml-64' : 'ml-0'}`}>
           {children}
         </main>
       </div>
