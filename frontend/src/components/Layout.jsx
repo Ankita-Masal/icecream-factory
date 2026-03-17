@@ -71,7 +71,7 @@ export default function Layout({ children }) {
         {/* Sidebar */}
         {sidebarOpen && (
           <aside className="w-64 bg-white shadow-sm fixed left-0 top-14 bottom-0 overflow-y-auto z-40 md:translate-x-0">
-            <nav className="p-3">
+            <nav className="p-3 pb-10">
               <ul className="space-y-1">
                 {navItems.map((item) => {
                   const Icon = item.icon

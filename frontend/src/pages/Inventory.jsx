@@ -426,7 +426,8 @@ export default function Inventory() {
       {/* Products Table */}
       {view === 'products' && (
         <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-          <table className="w-full">
+          <div className="overflow-x-auto">
+            <table className="w-full">
             <thead className="bg-gray-50 border-b">
               <tr>
                 {['Category', 'Size', 'Flavor', 'Price', 'Quantity', 'Actions'].map(h => (
@@ -492,6 +493,7 @@ export default function Inventory() {
               })}
             </tbody>
           </table>
+          </div>
         </div>
       )}
 
@@ -508,7 +510,8 @@ export default function Inventory() {
             </button>
           </div>
           <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-            <table className="w-full">
+            <div className="overflow-x-auto">
+              <table className="w-full">
               <thead className="bg-gray-50 border-b">
                 <tr>
                   {['Category', 'Size', 'Quantity per Box', 'Actions'].map(h => (
@@ -551,6 +554,7 @@ export default function Inventory() {
                 ))}
               </tbody>
             </table>
+            </div>
           </div>
         </div>
       )}

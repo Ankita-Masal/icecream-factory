@@ -351,6 +351,7 @@ export default function Godown() {
 
       {/* Table */}
       <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div className="overflow-x-auto">
         <table className="w-full">
           <thead className="bg-gray-50 border-b">
             <tr>
@@ -441,6 +442,7 @@ export default function Godown() {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* Modals */}

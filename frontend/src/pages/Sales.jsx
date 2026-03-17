@@ -669,6 +669,7 @@ export default function Sales() {
 
       {/* Bills Table */}
       <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div className="overflow-x-auto">
         <table className="w-full">
           <thead className="bg-gray-50 border-b">
             <tr>
@@ -735,6 +736,7 @@ export default function Sales() {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* Modals */}

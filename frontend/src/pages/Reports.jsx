@@ -83,6 +83,7 @@ const SalesReportView = ({ data }) => {
 
       {/* Table */}
       <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div className="overflow-x-auto">
         <table className="w-full">
           <thead className="bg-gray-50 border-b">
             <tr>
@@ -126,6 +127,7 @@ const SalesReportView = ({ data }) => {
           </tbody>
         </table>
       </div>
+      </div>
     </div>
   )
 }
@@ -159,6 +161,7 @@ const InventoryReportView = ({ data }) => {
       </div>
 
       <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div className="overflow-x-auto">
         <table className="w-full">
           <thead className="bg-gray-50 border-b">
             <tr>
@@ -187,6 +190,7 @@ const InventoryReportView = ({ data }) => {
             ))}
           </tbody>
         </table>
+      </div>
       </div>
     </div>
   )
@@ -218,6 +222,7 @@ const GodownReportView = ({ data }) => {
       </div>
 
       <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div className="overflow-x-auto">
         <table className="w-full">
           <thead className="bg-gray-50 border-b">
             <tr>
@@ -238,6 +243,7 @@ const GodownReportView = ({ data }) => {
             ))}
           </tbody>
         </table>
+      </div>
       </div>
     </div>
   )
@@ -276,6 +282,7 @@ const PurchaseReportView = ({ data }) => {
 
       {/* Table Header */}
       <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div className="overflow-x-auto">
         <table className="w-full">
           <thead className="bg-gray-50 border-b">
             <tr>
@@ -317,6 +324,7 @@ const PurchaseReportView = ({ data }) => {
             ))}
           </tbody>
         </table>
+      </div>
       </div>
     </div>
   )

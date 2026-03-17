@@ -328,6 +328,7 @@ const WorkersTable = ({ workers, workerType, onEdit, onDelete, onAttendance }) =
 
   return (
     <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+      <div className="overflow-x-auto">
       <table className="w-full">
         <thead className="bg-gray-50 border-b">
           <tr>
@@ -373,6 +374,7 @@ const WorkersTable = ({ workers, workerType, onEdit, onDelete, onAttendance }) =
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   )
 }
